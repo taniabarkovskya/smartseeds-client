@@ -1,22 +1,22 @@
 import { z } from "zod";
 
 export const loginSchema = z.object({
-  email: z.string().email("Некоректний формат email"),
-  password: z.string().min(6, "Мінімум 6 символів"),
+  email: z.string().email("Invalid email format"),
+  password: z.string().min(6, "Minimum 6 characters"),
 });
 
 export type LoginFormData = z.infer<typeof loginSchema>;
 
 export const registerSchema = z
   .object({
-    full_name: z.string().min(2, "Мінімум 2 символи"),
-    email: z.string().email("Некоректний формат email"),
-    password: z.string().min(6, "Мінімум 6 символів"),
+    full_name: z.string().min(2, "Minimum 2 characters"),
+    email: z.string().email("Invalid email format"),
+    password: z.string().min(6, "Minimum 6 characters"),
     confirm_password: z.string(),
     role: z.enum(["Учень", "Вчитель"]),
   })
   .refine((data) => data.password === data.confirm_password, {
-    message: "Паролі не збігаються",
+    message: "Passwords do not match",
     path: ["confirm_password"],
   });
 

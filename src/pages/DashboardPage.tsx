@@ -134,7 +134,7 @@ export function DashboardPage() {
                 <CardContent className="p-5">
                   <p className="font-medium text-foreground">🔥 Current streak</p>
                   <p className="text-sm text-muted-foreground mt-1">
-                    Продовжуй навчання щодня!
+                    Keep learning every day!
                   </p>
                 </CardContent>
               </Card>
@@ -148,9 +148,9 @@ export function DashboardPage() {
                 </h3>
                 {(
                   [
-                    { label: "Фонетика", value: vector.phonetics, color: "#4F86C6" },
-                    { label: "Лексика", value: vector.lexical, color: "#67C99E" },
-                    { label: "Граматика", value: vector.grammar, color: "#F7A84A" },
+                    { label: "Phonetics", value: vector.phonetics, color: "#4F86C6" },
+                    { label: "Lexical", value: vector.lexical, color: "#67C99E" },
+                    { label: "Grammar", value: vector.grammar, color: "#F7A84A" },
                   ] as const
                 ).map(({ label, value, color }) => (
                   <div key={label} className="mb-4">

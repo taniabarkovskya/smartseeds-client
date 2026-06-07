@@ -28,7 +28,7 @@ export function useSpeechRecognition(lang = "uk-UA") {
     const SpeechRecognitionAPI = getSpeechRecognition();
 
     if (!SpeechRecognitionAPI) {
-      setError("Браузер не підтримує розпізнавання мовлення");
+      setError("Speech recognition is not supported in this browser");
       return;
     }
 
@@ -42,7 +42,7 @@ export function useSpeechRecognition(lang = "uk-UA") {
       setIsListening(false);
     };
     recognition.onerror = () => {
-      setError("Помилка розпізнавання. Перевір мікрофон.");
+      setError("Recognition failed. Check your microphone.");
       setIsListening(false);
     };
 

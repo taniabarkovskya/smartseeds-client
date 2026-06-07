@@ -5,6 +5,9 @@ import { LoginPage } from "@/pages/LoginPage";
 import { RegisterPage } from "@/pages/RegisterPage";
 import { DashboardPage } from "@/pages/DashboardPage";
 import { CourseCatalogPage } from "@/pages/CourseCatalogPage";
+import { CoursePage } from "@/pages/CoursePage";
+import { TheoryPage } from "@/pages/TheoryPage";
+import { AIAssistantPage } from "@/pages/AIAssistantPage";
 import { TaskPage } from "@/pages/TaskPage";
 import { ResultPage } from "@/pages/ResultPage";
 
@@ -47,6 +50,10 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <DashboardPage /> },
       { path: "courses", element: <CourseCatalogPage /> },
+      { path: "courses/:courseId", element: <CoursePage /> },
+      { path: "courses/:courseId/theory", element: <TheoryPage /> },
+      { path: "courses/:courseId/tasks", element: <TaskPage /> },
+      { path: "ai", element: <AIAssistantPage /> },
       { path: "task/:taskId", element: <TaskPage /> },
       { path: "result", element: <ResultPage /> },
     ],

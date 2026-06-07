@@ -1,6 +1,6 @@
 export interface Role {
   id: string;
-  name: "Учень" | "Вчитель" | "Адмін";
+  name: "Учень" | "Вчитель" | "Admin";
   description?: string;
 }
 

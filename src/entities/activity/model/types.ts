@@ -11,6 +11,6 @@ export interface ErrorType {
   id: string;
   activity_id: string;
   error_code: string;
-  category: "Фонетична" | "Лексична" | "Граматична";
+  category: "Phonetic" | "Lexical" | "Grammar";
   description?: string;
 }

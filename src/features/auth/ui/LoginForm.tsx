@@ -34,7 +34,7 @@ export function LoginForm() {
     });
     setIsLoading(false);
     if (error) {
-      setServerError("Невірний email або пароль");
+      setServerError("Invalid email or password");
     } else {
       navigate("/");
     }
@@ -90,7 +90,7 @@ export function LoginForm() {
           className="w-full"
           disabled={isLoading}
         >
-          {isLoading ? "Входимо..." : "Sign In"}
+          {isLoading ? "Signing in..." : "Sign In"}
         </Button>
 
         <div className="text-center space-y-2">
@@ -102,12 +102,12 @@ export function LoginForm() {
             Forgot password?
           </button>
           <p className="text-sm text-muted-foreground">
-            Немає акаунту?{" "}
+            Don't have an account?{" "}
             <Link
               to="/register"
               className="text-foreground underline underline-offset-2 hover:opacity-70"
             >
-              Зареєструватись
+              Register
             </Link>
           </p>
         </div>

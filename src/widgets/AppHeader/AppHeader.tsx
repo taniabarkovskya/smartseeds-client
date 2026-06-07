@@ -61,9 +61,12 @@ export function AppHeader() {
           >
             Tasks
           </Link>
-          <button className="text-sm font-medium text-foreground hover:opacity-70 transition-opacity">
+          <Link
+            to="/ai"
+            className="text-sm font-medium text-foreground hover:opacity-70 transition-opacity"
+          >
             AI Assistant
-          </button>
+          </Link>
           <button className="text-sm font-medium text-foreground hover:opacity-70 transition-opacity">
             Notifications
           </button>
@@ -86,7 +89,7 @@ export function AppHeader() {
           onClick={handleLogout}
           className="text-sm font-medium text-foreground hover:opacity-70 transition-opacity ml-2"
         >
-          Вийти
+          Sign Out
         </button>
       </div>
     </header>

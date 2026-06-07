@@ -42,7 +42,7 @@ export function Dialog({ open, onClose, title, children, className }: DialogProp
             <button
               onClick={onClose}
               className="text-muted-foreground hover:text-foreground transition-colors"
-              aria-label="Закрити"
+              aria-label="Close"
             >
               <X className="size-5" />
             </button>

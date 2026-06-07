@@ -9,10 +9,10 @@ interface ForgotPasswordDialogProps {
 
 export function ForgotPasswordDialog({ open, onClose }: ForgotPasswordDialogProps) {
   return (
-    <Dialog open={open} onClose={onClose} title="Забули пароль?">
+    <Dialog open={open} onClose={onClose} title="Forgot password?">
       <div className="space-y-4">
         <p className="text-sm text-muted-foreground leading-relaxed">
-          Самостійне скидання паролю поки недоступне. Зверніться до нашої служби підтримки — ми допоможемо відновити доступ протягом 24 годин.
+          Self-service password reset is not yet available. Please contact our support team — we will help you restore access within 24 hours.
         </p>
 
         <a
@@ -29,7 +29,7 @@ export function ForgotPasswordDialog({ open, onClose }: ForgotPasswordDialogProp
           className="w-full"
           onClick={onClose}
         >
-          Зрозуміло
+          Got it
         </Button>
       </div>
     </Dialog>

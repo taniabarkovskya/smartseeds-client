@@ -10,6 +10,11 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
+const ROLE_LABELS: Record<"Учень" | "Вчитель", string> = {
+  "Учень": "Student",
+  "Вчитель": "Teacher",
+};
+
 export function RegisterForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -35,7 +40,6 @@ export function RegisterForm() {
     setIsLoading(true);
     setServerError(null);
 
-    // 1. Create Supabase auth user
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email: data.email,
       password: data.password,
@@ -44,18 +48,16 @@ export function RegisterForm() {
 
     if (authError || !authData.user) {
       setIsLoading(false);
-      setServerError(authError?.message ?? "Помилка реєстрації");
+      setServerError(authError?.message ?? "Registration failed");
       return;
     }
 
-    // 2. Get role_id
     const { data: roleData } = await supabase
       .from("roles")
       .select("id")
       .eq("name", data.role)
       .single();
 
-    // 3. Insert into custom users table
     await supabase.from("users").insert({
       id: authData.user.id,
       role_id: roleData?.id ?? null,
@@ -64,7 +66,6 @@ export function RegisterForm() {
       created_at: new Date().toISOString(),
     });
 
-    // 4. Create competency vector for students
     if (data.role === "Учень") {
       await supabase.from("competency_vectors").insert({
         user_id: authData.user.id,
@@ -76,11 +77,9 @@ export function RegisterForm() {
     setIsLoading(false);
 
     if (authData.session) {
-      // Email confirmation disabled — log in right away
       navigate("/");
     } else {
-      // Email confirmation required
-      setSuccessMessage("Перевірте пошту — ми надіслали лист для підтвердження акаунту.");
+      setSuccessMessage("Check your inbox — we sent a confirmation email.");
     }
   };
 
@@ -88,10 +87,10 @@ export function RegisterForm() {
     return (
       <div className="text-center space-y-4 py-4">
         <div className="text-4xl">📬</div>
-        <p className="font-heading font-bold text-foreground">Майже готово!</p>
+        <p className="font-heading font-bold text-foreground">Almost there!</p>
         <p className="text-sm text-muted-foreground">{successMessage}</p>
         <Link to="/login" className="text-sm text-foreground underline underline-offset-2 hover:opacity-70">
-          Повернутись до входу
+          Back to Sign In
         </Link>
       </div>
     );
@@ -101,7 +100,7 @@ export function RegisterForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       {/* Role selector */}
       <div className="space-y-2">
-        <Label>Я є...</Label>
+        <Label>I am a...</Label>
         <div className="flex gap-2">
           {(["Учень", "Вчитель"] as const).map((role) => (
             <button
@@ -115,7 +114,7 @@ export function RegisterForm() {
               )}
               onClick={() => setValue("role", role)}
             >
-              {role}
+              {ROLE_LABELS[role]}
             </button>
           ))}
         </div>
@@ -126,11 +125,11 @@ export function RegisterForm() {
 
       {/* Full name */}
       <div className="space-y-2">
-        <Label htmlFor="full_name">Повне ім'я</Label>
+        <Label htmlFor="full_name">Full name</Label>
         <Input
           id="full_name"
           type="text"
-          placeholder="Іван Петренко"
+          placeholder="Jane Smith"
           {...register("full_name")}
         />
         {errors.full_name && (
@@ -154,12 +153,12 @@ export function RegisterForm() {
 
       {/* Password */}
       <div className="space-y-2">
-        <Label htmlFor="password">Пароль</Label>
+        <Label htmlFor="password">Password</Label>
         <div className="relative">
           <Input
             id="password"
             type={showPassword ? "text" : "password"}
-            placeholder="Мінімум 6 символів"
+            placeholder="At least 6 characters"
             className="pr-10"
             {...register("password")}
           />
@@ -178,12 +177,12 @@ export function RegisterForm() {
 
       {/* Confirm password */}
       <div className="space-y-2">
-        <Label htmlFor="confirm_password">Підтвердіть пароль</Label>
+        <Label htmlFor="confirm_password">Confirm password</Label>
         <div className="relative">
           <Input
             id="confirm_password"
             type={showConfirm ? "text" : "password"}
-            placeholder="Повторіть пароль"
+            placeholder="Repeat your password"
             className="pr-10"
             {...register("confirm_password")}
           />
@@ -211,16 +210,16 @@ export function RegisterForm() {
         className="w-full"
         disabled={isLoading}
       >
-        {isLoading ? "Реєструємо..." : "Create Account"}
+        {isLoading ? "Creating account..." : "Create Account"}
       </Button>
 
       <p className="text-sm text-muted-foreground text-center">
-        Вже є акаунт?{" "}
+        Already have an account?{" "}
         <Link
           to="/login"
           className="text-foreground underline underline-offset-2 hover:opacity-70"
         >
-          Увійти
+          Sign In
         </Link>
       </p>
     </form>

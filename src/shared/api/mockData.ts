@@ -5,14 +5,38 @@ export const MOCK_COURSES: Course[] = [
   {
     id: "1",
     code: "CRS-01",
-    title: "Звуковимова: базовий рівень",
-    description: "Корекція вимови окремих фонем для дітей 4–6 років",
+    title: "Sound Pronunciation: Beginner Level",
+    description: "Correcting pronunciation of individual phonemes for children aged 4–6",
   },
   {
     id: "2",
     code: "CRS-02",
-    title: "Диференціація опозиційних фонем",
-    description: "Розрізнення пар звуків: [с]–[ш], [р]–[л], [б]–[п]",
+    title: "Differentiating Opposing Phonemes",
+    description: "Distinguishing sound pairs: [s]–[sh], [r]–[l], [b]–[p]",
+  },
+  {
+    id: "3",
+    code: "CRS-03",
+    title: "Developing Connected Speech",
+    description: "Exercises in building sentences and short narratives",
+  },
+  {
+    id: "4",
+    code: "CRS-04",
+    title: "Expanding Vocabulary",
+    description: "Broadening the child's active and passive vocabulary",
+  },
+  {
+    id: "5",
+    code: "CRS-05",
+    title: "Automating Sounds in Sentences",
+    description: "Reinforcing correct pronunciation of sounds in connected speech",
+  },
+  {
+    id: "6",
+    code: "CRS-06",
+    title: "Grammar Structure of Language",
+    description: "Learning grammatical forms and word agreement in sentences",
   },
 ];
 
@@ -23,9 +47,9 @@ export const MOCK_TASKS: Task[] = [
     code: "CRS-01-MOD-01-TSK-01",
     complexity: 0.2,
     content_json: {
-      text: "Вимов слово: СОК",
+      text: "Pronounce the word: СОК",
       expected_word: "сок",
-      instruction: "Скажи чітко звук [С]",
+      instruction: "Say the sound [S] clearly",
     },
   },
   {
@@ -34,9 +58,9 @@ export const MOCK_TASKS: Task[] = [
     code: "CRS-01-MOD-01-TSK-02",
     complexity: 0.4,
     content_json: {
-      text: "Вимов слово: ШАПКА",
+      text: "Pronounce the word: ШАПКА",
       expected_word: "шапка",
-      instruction: "Зверни увагу на звук [Ш]",
+      instruction: "Pay attention to the sound [SH]",
     },
   },
   {
@@ -45,9 +69,9 @@ export const MOCK_TASKS: Task[] = [
     code: "CRS-01-MOD-01-TSK-03",
     complexity: 0.6,
     content_json: {
-      text: "Вимов слово: ЛИСИЦЯ",
+      text: "Pronounce the word: ЛИСИЦЯ",
       expected_word: "лисиця",
-      instruction: "Зверни увагу на звук [Л]",
+      instruction: "Pay attention to the sound [L]",
     },
   },
 ];
