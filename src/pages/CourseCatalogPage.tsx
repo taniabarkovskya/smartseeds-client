@@ -115,7 +115,7 @@ export function CourseCatalogPage() {
   }, [allCourses]);
 
   const toggleFilter = <T extends string>(
-    list: T[],
+    _list: T[],
     setList: React.Dispatch<React.SetStateAction<T[]>>,
     value: T,
   ) => {

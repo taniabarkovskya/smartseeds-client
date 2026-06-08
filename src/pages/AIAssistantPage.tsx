@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { Plus, Search, Send } from "lucide-react";
 import { AppHeader } from "@/widgets/AppHeader/AppHeader";
 import { supabase } from "@/shared/api/supabase";
@@ -29,7 +28,6 @@ function createChat(title = "New conversation"): Chat {
 }
 
 export function AIAssistantPage() {
-  const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState("user@example.com");
   const [chats, setChats] = useState<Chat[]>([createChat()]);
   const [activeChatId, setActiveChatId] = useState<string>(chats[0].id);
