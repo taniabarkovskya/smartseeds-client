@@ -4,7 +4,7 @@ import { Mail, Clock, MessageCircle } from "lucide-react";
 export function ContactPage() {
   return (
     <div className="min-h-screen bg-[#9590B8]">
-      <header className="flex items-center justify-between px-10 py-6">
+      <header className="flex items-center justify-between px-4 py-5 md:px-10 md:py-6">
         <Link to="/login" className="font-heading text-3xl font-bold text-foreground hover:opacity-80 transition-opacity">
           SmartSeeds
         </Link>
@@ -24,8 +24,8 @@ export function ContactPage() {
         </nav>
       </header>
 
-      <main className="flex flex-col items-center pt-16 px-4 pb-20">
-        <h1 className="font-heading text-5xl font-bold text-foreground mb-3">Contact Us</h1>
+      <main className="flex flex-col items-center pt-10 px-4 pb-16 md:pt-16 md:pb-20">
+        <h1 className="font-heading text-4xl font-bold text-foreground mb-3 md:text-5xl">Contact Us</h1>
         <p className="text-foreground/70 text-base mb-10">
           We're here to help. Reach out anytime.
         </p>

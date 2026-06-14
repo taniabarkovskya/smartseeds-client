@@ -22,35 +22,35 @@ export function CoursePage() {
         className="relative flex flex-col items-center justify-center overflow-hidden"
         style={{
           background: `linear-gradient(135deg, ${course.heroFrom} 0%, ${course.heroTo} 100%)`,
-          minHeight: "260px",
+          minHeight: "180px",
         }}
       >
         {/* Back button */}
         <button
           onClick={() => navigate("/courses")}
-          className="absolute top-4 left-6 flex items-center gap-1.5 text-white/80 hover:text-white text-sm transition-colors"
+          className="absolute top-4 left-4 flex items-center gap-1.5 text-white/80 hover:text-white text-sm transition-colors md:left-6"
         >
           <ArrowLeft className="size-4" />
           All courses
         </button>
 
         {/* Character */}
-        <div className="text-[110px] leading-none select-none drop-shadow-lg">
+        <div className="text-[70px] leading-none select-none drop-shadow-lg md:text-[110px]">
           {course.emoji}
         </div>
       </div>
 
       {/* Content */}
-      <div className="max-w-5xl mx-auto px-8 py-10">
-        <div className="grid grid-cols-3 gap-10">
+      <div className="max-w-5xl mx-auto px-4 py-6 md:px-8 md:py-10">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-10">
           {/* Main — 2/3 */}
-          <div className="col-span-2">
-            <h1 className="font-heading text-4xl font-bold text-foreground mb-6">
+          <div className="lg:col-span-2">
+            <h1 className="font-heading text-3xl font-bold text-foreground mb-4 md:text-4xl md:mb-6">
               {course.title}
             </h1>
 
             {/* Meta chips */}
-            <div className="flex gap-3 mb-6">
+            <div className="flex flex-wrap gap-2 mb-4 md:gap-3 md:mb-6">
               <span className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground bg-muted rounded-full px-3 py-1">
                 <Clock className="size-3" /> 8–16 hours
               </span>
@@ -112,7 +112,7 @@ export function CoursePage() {
           </div>
 
           {/* Sidebar — 1/3 */}
-          <div className="pt-[72px]">
+          <div className="lg:pt-[72px]">
             <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground mb-4">
               Typical Tasks in This Course
             </p>

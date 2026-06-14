@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, TrendingUp, Bell, BookOpen, Star, Zap, BarChart2 } from "lucide-react";
+import { X, TrendingUp, Bell, BookOpen, Star, Zap, BarChart2, ArrowLeft } from "lucide-react";
 import { AppHeader } from "@/widgets/AppHeader/AppHeader";
 
 interface Notification {
@@ -199,7 +199,7 @@ export function NotificationsPage() {
     <div className="min-h-screen bg-[#9590B8]">
       <AppHeader />
 
-      <main className="px-6 pb-10 pt-2">
+      <main className="px-4 pb-8 pt-2 md:px-6">
         <div className="mb-4 flex items-center gap-3">
           <h1 className="font-heading text-2xl font-bold text-foreground">Notifications</h1>
           {unreadCount > 0 && (
@@ -209,11 +209,17 @@ export function NotificationsPage() {
           )}
         </div>
 
-        <div className="flex gap-0 overflow-hidden rounded-2xl bg-white shadow-sm" style={{ minHeight: "calc(100vh - 160px)" }}>
-          {/* Notification list */}
+        <div
+          className="flex gap-0 overflow-hidden rounded-2xl bg-white shadow-sm"
+          style={{ minHeight: "calc(100vh - 160px)" }}
+        >
+          {/* Notification list — hidden on mobile when detail is open */}
           <div
-            className="flex-shrink-0 overflow-y-auto border-r border-border transition-all duration-300"
-            style={{ width: selectedId ? "380px" : "100%" }}
+            className={[
+              "flex-shrink-0 overflow-y-auto border-r border-border transition-all duration-300",
+              selectedId ? "hidden md:flex md:flex-col" : "flex flex-col w-full",
+            ].join(" ")}
+            style={{ width: selectedId ? "380px" : undefined }}
           >
             {notifications.map(n => {
               const Icon = ICON_MAP[n.type];
@@ -260,7 +266,10 @@ export function NotificationsPage() {
 
           {/* Notification detail */}
           <div
-            className="flex flex-1 flex-col overflow-hidden transition-all duration-300"
+            className={[
+              "flex flex-1 flex-col overflow-hidden transition-all duration-300",
+              selectedId ? "flex" : "hidden md:flex",
+            ].join(" ")}
             style={{
               maxWidth: selectedId ? "100%" : "0",
               opacity: selectedId ? 1 : 0,
@@ -268,7 +277,15 @@ export function NotificationsPage() {
           >
             {selected && (
               <div className="flex h-full flex-col overflow-y-auto">
-                <div className="flex items-start justify-between border-b border-border px-8 py-5">
+                <div className="flex items-start justify-between border-b border-border px-4 py-4 md:px-8 md:py-5">
+                  {/* Mobile back button */}
+                  <button
+                    onClick={handleClose}
+                    className="md:hidden mr-3 mt-0.5 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+                    aria-label="Back"
+                  >
+                    <ArrowLeft className="h-5 w-5" />
+                  </button>
                   <div className="flex items-center gap-3">
                     <div
                       className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
@@ -285,14 +302,14 @@ export function NotificationsPage() {
                   </div>
                   <button
                     onClick={handleClose}
-                    className="rounded-lg p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                    className="hidden md:flex rounded-lg p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
                     aria-label="Close"
                   >
                     <X className="h-4 w-4" />
                   </button>
                 </div>
 
-                <div className="flex-1 px-8 py-6 text-sm text-foreground/80 leading-relaxed space-y-3">
+                <div className="flex-1 px-4 py-4 text-sm text-foreground/80 leading-relaxed space-y-3 md:px-8 md:py-6">
                   {formatBody(selected.body)}
                 </div>
               </div>

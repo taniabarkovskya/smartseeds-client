@@ -33,7 +33,7 @@ export function FavoritesPage() {
     <div className="min-h-screen bg-[#9590B8]">
       <AppHeader />
 
-      <main className="px-8 pb-12 pt-2">
+      <main className="px-4 pb-10 pt-2 md:px-8 md:pb-12">
         <div className="mb-6 flex items-center gap-3">
           <button
             onClick={() => navigate("/courses")}
@@ -65,7 +65,7 @@ export function FavoritesPage() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-5">
             {savedCourses.map((course) => {
               const isFav = favoriteIds.includes(course.id);
               return (

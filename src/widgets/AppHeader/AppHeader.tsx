@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Sprout } from "lucide-react";
+import { Sprout, Menu, X } from "lucide-react";
 import { supabase } from "@/shared/api/supabase";
 import { Dialog } from "@/components/ui/dialog";
 
@@ -34,9 +34,17 @@ function IconX() {
   );
 }
 
+const NAV_LINKS = [
+  { to: "/courses",       label: "Content" },
+  { to: "/tasks",         label: "Tasks" },
+  { to: "/ai",            label: "AI Assistant" },
+  { to: "/notifications", label: "Notifications" },
+];
+
 export function AppHeader() {
   const navigate = useNavigate();
   const [signOutOpen, setSignOutOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -45,60 +53,91 @@ export function AppHeader() {
 
   return (
     <>
-      <header className="flex items-center justify-between px-8 py-4">
-        <div className="flex items-center gap-8">
-          <Link to="/" className="flex items-center gap-2">
-            <Sprout className="size-5 text-foreground" />
-            <span className="font-heading font-bold text-foreground">SmartSeeds</span>
-          </Link>
+      <header className="px-4 py-4 md:px-8">
+        <div className="flex items-center justify-between">
+          {/* Logo + desktop nav */}
+          <div className="flex items-center gap-4 md:gap-8">
+            <Link to="/" className="flex items-center gap-2">
+              <Sprout className="size-5 text-foreground" />
+              <span className="font-heading font-bold text-foreground">SmartSeeds</span>
+            </Link>
 
-          <nav className="flex items-center gap-6">
-            <Link
-              to="/courses"
-              className="text-sm font-medium text-foreground hover:opacity-70 transition-opacity"
-            >
-              Content
-            </Link>
-            <Link
-              to="/tasks"
-              className="text-sm font-medium text-foreground hover:opacity-70 transition-opacity"
-            >
-              Tasks
-            </Link>
-            <Link
-              to="/ai"
-              className="text-sm font-medium text-foreground hover:opacity-70 transition-opacity"
-            >
-              AI Assistant
-            </Link>
-            <Link
-              to="/notifications"
-              className="text-sm font-medium text-foreground hover:opacity-70 transition-opacity"
-            >
-              Notifications
-            </Link>
-          </nav>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-3 text-foreground">
-            <a href="#" aria-label="Instagram" className="hover:opacity-70 transition-opacity">
-              <IconInstagram />
-            </a>
-            <a href="#" aria-label="LinkedIn" className="hover:opacity-70 transition-opacity">
-              <IconLinkedin />
-            </a>
-            <a href="#" aria-label="X" className="hover:opacity-70 transition-opacity">
-              <IconX />
-            </a>
+            <nav className="hidden md:flex items-center gap-6">
+              {NAV_LINKS.map(({ to, label }) => (
+                <Link
+                  key={to}
+                  to={to}
+                  className="text-sm font-medium text-foreground hover:opacity-70 transition-opacity"
+                >
+                  {label}
+                </Link>
+              ))}
+            </nav>
           </div>
+
+          {/* Desktop actions */}
+          <div className="hidden md:flex items-center gap-4">
+            <div className="flex items-center gap-3 text-foreground">
+              <a href="#" aria-label="Instagram" className="hover:opacity-70 transition-opacity">
+                <IconInstagram />
+              </a>
+              <a href="#" aria-label="LinkedIn" className="hover:opacity-70 transition-opacity">
+                <IconLinkedin />
+              </a>
+              <a href="#" aria-label="X" className="hover:opacity-70 transition-opacity">
+                <IconX />
+              </a>
+            </div>
+            <button
+              onClick={() => setSignOutOpen(true)}
+              className="text-sm font-medium text-foreground hover:opacity-70 transition-opacity ml-2"
+            >
+              Sign Out
+            </button>
+          </div>
+
+          {/* Mobile burger */}
           <button
-            onClick={() => setSignOutOpen(true)}
-            className="text-sm font-medium text-foreground hover:opacity-70 transition-opacity ml-2"
+            onClick={() => setMenuOpen((o) => !o)}
+            className="md:hidden flex items-center justify-center text-foreground p-1"
+            aria-label="Toggle menu"
           >
-            Sign Out
+            {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
           </button>
         </div>
+
+        {/* Mobile drawer */}
+        {menuOpen && (
+          <div className="md:hidden mt-3 border-t border-white/20 pt-3 flex flex-col">
+            {NAV_LINKS.map(({ to, label }) => (
+              <Link
+                key={to}
+                to={to}
+                onClick={() => setMenuOpen(false)}
+                className="py-2.5 text-sm font-medium text-foreground hover:opacity-70 transition-opacity"
+              >
+                {label}
+              </Link>
+            ))}
+            <div className="flex items-center gap-3 pt-3 mt-1 border-t border-white/20 text-foreground">
+              <a href="#" aria-label="Instagram" className="hover:opacity-70 transition-opacity">
+                <IconInstagram />
+              </a>
+              <a href="#" aria-label="LinkedIn" className="hover:opacity-70 transition-opacity">
+                <IconLinkedin />
+              </a>
+              <a href="#" aria-label="X" className="hover:opacity-70 transition-opacity">
+                <IconX />
+              </a>
+              <button
+                onClick={() => { setMenuOpen(false); setSignOutOpen(true); }}
+                className="ml-auto text-sm font-medium text-foreground hover:opacity-70 transition-opacity"
+              >
+                Sign Out
+              </button>
+            </div>
+          </div>
+        )}
       </header>
 
       <Dialog open={signOutOpen} onClose={() => setSignOutOpen(false)} title="Sign Out">

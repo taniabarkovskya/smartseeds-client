@@ -313,7 +313,7 @@ function Section({ title, count, tasks, status, icon, accentColor, onAction }: S
           {count}
         </span>
       </div>
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
         {tasks.map(task => (
           <TaskCard key={task.id} task={task} status={status} onAction={onAction} />
         ))}
@@ -333,7 +333,7 @@ export function TasksPage() {
     <div className="min-h-screen bg-[#9590B8]">
       <AppHeader />
 
-      <main className="px-6 pb-12 pt-2">
+      <main className="px-4 pb-10 pt-2 md:px-6 md:pb-12">
         <div className="mb-6">
           <h1 className="font-heading text-2xl font-bold text-foreground">My Tasks</h1>
           <p className="mt-0.5 text-sm text-foreground/70">

@@ -69,17 +69,17 @@ export function DashboardPage() {
     <div className="min-h-screen bg-[#9590B8]">
       <AppHeader />
 
-      <main className="px-8 py-8 max-w-5xl mx-auto">
+      <main className="px-4 py-6 max-w-5xl mx-auto md:px-8 md:py-8">
         {/* Hero */}
-        <section className="text-center mb-10">
-          <h1 className="font-heading text-5xl font-bold text-foreground mb-2">
+        <section className="text-center mb-8 md:mb-10">
+          <h1 className="font-heading text-3xl font-bold text-foreground mb-2 md:text-5xl">
             Welcome, {displayName}
           </h1>
-          <p className="text-base text-foreground/80">Ready to learn today?</p>
-          <p className="text-base text-foreground/80 mb-6">
+          <p className="text-sm text-foreground/80 md:text-base">Ready to learn today?</p>
+          <p className="text-sm text-foreground/80 mb-5 md:text-base md:mb-6">
             Check recommended materials below (AI suggestions)
           </p>
-          <div className="flex justify-center gap-3">
+          <div className="flex flex-col items-center gap-2 sm:flex-row sm:justify-center sm:gap-3">
             <Button
               variant="dark"
               size="lg"
@@ -94,7 +94,7 @@ export function DashboardPage() {
         </section>
 
         {/* Course cards */}
-        <section className="grid grid-cols-3 gap-4 mb-10">
+        <section className="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-2 lg:grid-cols-3 md:mb-10">
           {displayCourses.map((course, i) => {
             const accent = CARD_ACCENTS[i % CARD_ACCENTS.length];
             return (
@@ -127,7 +127,7 @@ export function DashboardPage() {
           <h2 className="font-heading text-2xl font-bold text-foreground text-center mb-6">
             Your recent progress ↓
           </h2>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {/* Left: stat cards */}
             <div className="flex flex-col gap-4">
               <Card>

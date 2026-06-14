@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Plus, Search, Send } from "lucide-react";
+import { Plus, Search, Send, ChevronLeft, MessageSquare } from "lucide-react";
 import { AppHeader } from "@/widgets/AppHeader/AppHeader";
 import { supabase } from "@/shared/api/supabase";
 import { chatWithAI, type ChatMessage } from "@/shared/api/ai";
@@ -31,6 +31,7 @@ export function AIAssistantPage() {
   const [userEmail, setUserEmail] = useState("user@example.com");
   const [chats, setChats] = useState<Chat[]>([createChat()]);
   const [activeChatId, setActiveChatId] = useState<string>(chats[0].id);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [chatSearch, setChatSearch] = useState("");
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -100,13 +101,35 @@ export function AIAssistantPage() {
 
   const initials = userEmail.slice(0, 2).toUpperCase();
 
+  const handleSelectChat = (id: string) => {
+    setActiveChatId(id);
+    setSidebarOpen(false);
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-[#9590B8]">
       <AppHeader />
 
-      <div className="flex flex-1 px-8 pb-8 gap-6" style={{ minHeight: "calc(100vh - 72px)" }}>
+      {/* Mobile sidebar overlay */}
+      {sidebarOpen && (
+        <div className="fixed inset-0 z-40 md:hidden">
+          <div
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            onClick={() => setSidebarOpen(false)}
+          />
+        </div>
+      )}
+
+      <div className="flex flex-1 px-4 pb-4 gap-4 md:px-8 md:pb-8 md:gap-6" style={{ minHeight: "calc(100vh - 72px)" }}>
         {/* Sidebar */}
-        <aside className="w-64 shrink-0 bg-white/20 backdrop-blur-sm rounded-2xl flex flex-col overflow-hidden">
+        <aside
+          className={[
+            "shrink-0 bg-white/20 backdrop-blur-sm rounded-2xl flex flex-col overflow-hidden transition-all duration-300",
+            "fixed left-4 top-[72px] bottom-4 z-50 w-72",
+            "md:static md:w-64 md:z-auto",
+            sidebarOpen ? "translate-x-0 opacity-100" : "-translate-x-[120%] opacity-0 md:translate-x-0 md:opacity-100",
+          ].join(" ")}
+        >
           {/* Header */}
           <div className="flex items-center justify-between px-4 pt-4 pb-3">
             <span className="font-heading font-bold text-foreground text-base">Chats</span>
@@ -137,7 +160,7 @@ export function AIAssistantPage() {
             {filteredChats.map((chat) => (
               <button
                 key={chat.id}
-                onClick={() => setActiveChatId(chat.id)}
+                onClick={() => handleSelectChat(chat.id)}
                 className={`w-full text-left px-3 py-2 rounded-xl text-xs font-medium truncate transition-colors ${
                   chat.id === activeChatId
                     ? "bg-white/40 text-foreground"
@@ -177,13 +200,22 @@ export function AIAssistantPage() {
         {/* Chat area */}
         <div className="flex-1 flex flex-col bg-white/20 backdrop-blur-sm rounded-2xl overflow-hidden min-w-0">
           {/* Chat header */}
-          <div className="px-6 py-4 border-b border-white/20 shrink-0">
-            <h2 className="font-heading font-bold text-foreground">
-              {activeChat.title || "Flippy — AI Assistant"}
-            </h2>
-            <p className="text-xs text-foreground/60 mt-0.5">
-              Ask questions about speech exercises, grammar, and pronunciation
-            </p>
+          <div className="px-4 py-3 border-b border-white/20 shrink-0 flex items-center gap-3 md:px-6 md:py-4">
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="md:hidden flex items-center justify-center text-foreground hover:opacity-70 transition-opacity"
+              aria-label="Open chats"
+            >
+              <MessageSquare className="size-5" />
+            </button>
+            <div>
+              <h2 className="font-heading font-bold text-foreground text-sm md:text-base">
+                {activeChat.title || "Flippy — AI Assistant"}
+              </h2>
+              <p className="text-xs text-foreground/60 mt-0.5 hidden sm:block">
+                Ask questions about speech exercises, grammar, and pronunciation
+              </p>
+            </div>
           </div>
 
           {/* Messages */}

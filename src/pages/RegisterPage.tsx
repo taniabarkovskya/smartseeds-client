@@ -8,9 +8,9 @@ export function RegisterPage() {
 
   return (
     <div className="min-h-screen bg-[#9590B8]">
-      <header className="flex items-center justify-between px-10 py-6">
-        <span className="font-heading text-3xl font-bold text-foreground">SmartSeeds</span>
-        <nav className="flex items-center gap-6">
+      <header className="flex items-center justify-between px-4 py-5 md:px-10 md:py-6">
+        <span className="font-heading text-2xl font-bold text-foreground md:text-3xl">SmartSeeds</span>
+        <nav className="flex items-center gap-4 md:gap-6">
           <Link
             to="/contact"
             className="text-sm font-medium text-foreground hover:opacity-70 transition-opacity"
@@ -26,11 +26,11 @@ export function RegisterPage() {
         </nav>
       </header>
 
-      <main className="flex flex-col items-center pt-10 px-4 pb-20">
-        <h1 className="font-heading text-5xl font-bold text-foreground mb-8">
+      <main className="flex flex-col items-center pt-8 px-4 pb-14 md:pt-10 md:pb-20">
+        <h1 className="font-heading text-4xl font-bold text-foreground mb-6 md:text-5xl md:mb-8">
           Create Account
         </h1>
-        <div className="w-full max-w-md rounded-2xl bg-white px-8 py-8 shadow-sm">
+        <div className="w-full max-w-md rounded-2xl bg-white px-5 py-6 shadow-sm md:px-8 md:py-8">
           <RegisterForm />
         </div>
       </main>
