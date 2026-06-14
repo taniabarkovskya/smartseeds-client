@@ -4,7 +4,8 @@ import { Mic, MicOff, CheckCircle, XCircle, ArrowRight, ChevronLeft } from "luci
 import { AppHeader } from "@/widgets/AppHeader/AppHeader";
 import { useSpeechRecognition } from "@/features/speech-recorder/model/useSpeechRecognition";
 import { MOCK_EXERCISES, MOCK_COURSE_DETAILS } from "@/shared/api/mockLessons";
-import { MOCK_VECTOR } from "@/shared/api/mockData";
+import { MOCK_VECTOR, MOCK_COURSES } from "@/shared/api/mockData";
+import { chatWithAI } from "@/shared/api/ai";
 import { updateVector } from "@/shared/lib/adaptiveAlgorithm";
 import type { CompetencyVectorValues } from "@/shared/lib/adaptiveAlgorithm";
 import type {
@@ -597,8 +598,9 @@ export function TaskPage() {
   const [feedback, setFeedback] = useState<Feedback | null>(null);
   const [results, setResults] = useState<boolean[]>([]);
   const [done, setDone] = useState(false);
-  // Track live Pu vector across the session
   const [vector, setVector] = useState<CompetencyVectorValues>(MOCK_VECTOR);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiAnalysis, setAiAnalysis] = useState<string | null>(null);
 
   const exercise = exercises[idx];
   const progress = (idx / exercises.length) * 100;
@@ -637,10 +639,43 @@ export function TaskPage() {
     const pct = Math.round((score / total) * 100);
     const emoji = pct >= 80 ? "🎉" : pct >= 50 ? "👍" : "💪";
 
+    const getExText = (ex: typeof exercises[0]) => {
+      const e = ex as Record<string, string>;
+      return e.question ?? e.statement ?? e.prompt ?? e.word ?? e.sentence ?? e.text ?? ex.kind;
+    };
+
+    const handleAIAnalysis = async () => {
+      setAiLoading(true);
+      setAiAnalysis(null);
+      const courseList = MOCK_COURSES.map((c) => `• ${c.title}`).join("\n");
+      const exerciseLines = exercises
+        .map((ex, i) => `${i + 1}. [${results[i] ? "✓" : "✗"}] ${ex.kind}: "${getExText(ex)}"`)
+        .join("\n");
+      const prompt = `A student just finished the course "${course.title}" and scored ${score}/${total} (${pct}%).
+
+Exercise results:
+${exerciseLines}
+
+Available courses on the platform:
+${courseList}
+
+Please provide:
+1. A brief analysis of the student's performance (2–3 sentences)
+2. 2–3 specific areas to work on or suggestions for improvement
+3. Which course from the list above would you recommend next, and why (1 sentence)
+4. A short encouraging message
+
+Keep the tone friendly, warm, and motivating. The student is a child.`;
+
+      const reply = await chatWithAI([{ role: "user", content: prompt }]);
+      setAiAnalysis(reply);
+      setAiLoading(false);
+    };
+
     return (
       <div className="min-h-screen bg-[#9590B8]">
         <AppHeader />
-        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-72px)] px-6">
+        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-72px)] px-6 py-10">
           <div className="bg-[#2D2A4A] rounded-3xl p-10 max-w-md w-full text-center shadow-2xl">
             <div className="text-6xl mb-4">{emoji}</div>
             <h2 className="font-heading text-2xl font-bold text-white mb-2">Lesson Complete!</h2>
@@ -673,11 +708,25 @@ export function TaskPage() {
                 className="flex-1 py-3 rounded-xl bg-white/15 text-white text-sm font-semibold hover:bg-white/25 transition-colors">
                 Back to course
               </button>
-              <button onClick={() => { setIdx(0); setResults([]); setFeedback(null); setDone(false); setVector(MOCK_VECTOR); }}
+              <button onClick={() => { setIdx(0); setResults([]); setFeedback(null); setDone(false); setVector(MOCK_VECTOR); setAiAnalysis(null); }}
                 className="flex-1 py-3 rounded-xl bg-white text-foreground text-sm font-semibold hover:bg-white/90 transition-colors">
                 Try again
               </button>
             </div>
+
+            <button
+              onClick={() => void handleAIAnalysis()}
+              disabled={aiLoading}
+              className="w-full mt-3 py-3 rounded-xl bg-white/10 border border-white/30 text-white text-sm font-semibold hover:bg-white/20 transition-colors disabled:opacity-60"
+            >
+              {aiLoading ? "Analyzing…" : "✨ View AI Analysis & Suggestions"}
+            </button>
+
+            {aiAnalysis && (
+              <div className="mt-4 rounded-2xl bg-white/10 border border-white/20 p-5 text-left text-sm text-white/90 whitespace-pre-wrap leading-relaxed">
+                {aiAnalysis}
+              </div>
+            )}
           </div>
         </div>
       </div>
