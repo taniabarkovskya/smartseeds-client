@@ -1,10 +1,11 @@
 import { useState, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Search, X } from "lucide-react";
+import { Search, X, Heart } from "lucide-react";
 import { AppHeader } from "@/widgets/AppHeader/AppHeader";
 import { getCourses } from "@/entities/course/api/courseApi";
 import { MOCK_COURSES } from "@/shared/api/mockData";
+import { useFavoritesStore } from "@/shared/lib/store";
 import type { Course } from "@/entities/course/model/types";
 
 // Extended mock with extra metadata for display
@@ -83,6 +84,7 @@ type SortKey = "New" | "Popular" | "Relevant" | "Rating";
 
 export function CourseCatalogPage() {
   const navigate = useNavigate();
+  const { favoriteIds, toggleFavorite } = useFavoritesStore();
 
   const { data: dbCourses } = useQuery<Course[]>({
     queryKey: ["courses"],
@@ -255,15 +257,29 @@ export function CourseCatalogPage() {
         <div className="flex-1 min-w-0">
           {/* Search + sort */}
           <div className="mb-5">
-            <div className="relative mb-4">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-foreground/50" />
-              <input
-                type="text"
-                placeholder="Search courses..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-white/30 backdrop-blur-sm text-foreground placeholder:text-foreground/50 text-sm border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50"
-              />
+            <div className="flex items-center gap-3 mb-4">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-foreground/50" />
+                <input
+                  type="text"
+                  placeholder="Search courses..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-white/30 backdrop-blur-sm text-foreground placeholder:text-foreground/50 text-sm border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50"
+                />
+              </div>
+              <Link
+                to="/favorites"
+                className="flex items-center gap-1.5 shrink-0 rounded-xl bg-white/30 px-4 py-2.5 text-sm font-medium text-foreground backdrop-blur-sm border border-white/30 hover:bg-white/50 transition-colors"
+              >
+                <Heart className="size-4" fill={favoriteIds.length > 0 ? "currentColor" : "none"} />
+                Saved
+                {favoriteIds.length > 0 && (
+                  <span className="ml-0.5 rounded-full bg-[#1a1a1a] text-white text-[11px] px-1.5 py-px leading-none">
+                    {favoriteIds.length}
+                  </span>
+                )}
+              </Link>
             </div>
 
             <div className="flex gap-2">
@@ -291,29 +307,50 @@ export function CourseCatalogPage() {
             </div>
           ) : (
             <div className="grid grid-cols-3 gap-5">
-              {sorted.map((course, i) => (
-                <button
-                  key={course.id}
-                  onClick={() => navigate(`/courses/${course.id}`)}
-                  className="text-left bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition-shadow"
-                >
-                  {/* Card image area */}
+              {sorted.map((course, i) => {
+                const isFav = favoriteIds.includes(course.id);
+                return (
                   <div
-                    className="h-36 flex items-center justify-center text-5xl"
-                    style={{ backgroundColor: CARD_COLORS[i % CARD_COLORS.length] }}
+                    key={course.id}
+                    className="relative bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition-shadow"
                   >
-                    {course.image}
-                  </div>
+                    <button
+                      onClick={() => navigate(`/courses/${course.id}`)}
+                      className="w-full text-left"
+                    >
+                      {/* Card image area */}
+                      <div
+                        className="h-36 flex items-center justify-center text-5xl"
+                        style={{ backgroundColor: CARD_COLORS[i % CARD_COLORS.length] }}
+                      >
+                        {course.image}
+                      </div>
 
-                  {/* Card content */}
-                  <div className="p-4">
-                    <p className="font-heading font-semibold text-foreground text-sm leading-tight mb-1 line-clamp-2">
-                      {course.title}
-                    </p>
-                    <p className="text-xs text-muted-foreground">{course.hours}h · {course.level} · {course.difficulty}</p>
+                      {/* Card content */}
+                      <div className="p-4">
+                        <p className="font-heading font-semibold text-foreground text-sm leading-tight mb-1 line-clamp-2">
+                          {course.title}
+                        </p>
+                        <p className="text-xs text-muted-foreground">{course.hours}h · {course.level} · {course.difficulty}</p>
+                      </div>
+                    </button>
+
+                    {/* Heart button */}
+                    <button
+                      onClick={() => toggleFavorite(course.id)}
+                      aria-label={isFav ? "Remove from saved" : "Save course"}
+                      className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/80 backdrop-blur-sm shadow-sm transition-transform hover:scale-110"
+                    >
+                      <Heart
+                        className="size-4 transition-colors"
+                        fill={isFav ? "#ef4444" : "none"}
+                        stroke={isFav ? "#ef4444" : "#6b7280"}
+                        strokeWidth={1.75}
+                      />
+                    </button>
                   </div>
-                </button>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>

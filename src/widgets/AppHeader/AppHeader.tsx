@@ -60,7 +60,7 @@ export function AppHeader() {
               Content
             </Link>
             <Link
-              to="/courses"
+              to="/tasks"
               className="text-sm font-medium text-foreground hover:opacity-70 transition-opacity"
             >
               Tasks

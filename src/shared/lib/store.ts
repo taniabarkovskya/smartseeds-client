@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import type { User } from "@/entities/user/model/types";
 import type { Task } from "@/entities/course/model/types";
 import type { CompetencyVectorValues } from "@/shared/lib/adaptiveAlgorithm";
@@ -24,3 +25,23 @@ export const useAppStore = create<AppStore>((set) => ({
   setCurrentTask: (currentTask) => set({ currentTask }),
   setLastScore: (lastScore) => set({ lastScore }),
 }));
+
+interface FavoritesStore {
+  favoriteIds: string[];
+  toggleFavorite: (id: string) => void;
+}
+
+export const useFavoritesStore = create<FavoritesStore>()(
+  persist(
+    (set) => ({
+      favoriteIds: [],
+      toggleFavorite: (id) =>
+        set((state) => ({
+          favoriteIds: state.favoriteIds.includes(id)
+            ? state.favoriteIds.filter((x) => x !== id)
+            : [...state.favoriteIds, id],
+        })),
+    }),
+    { name: "smartseeds-favorites" },
+  ),
+);

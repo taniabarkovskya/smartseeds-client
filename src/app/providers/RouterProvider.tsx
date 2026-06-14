@@ -12,6 +12,8 @@ import { TaskPage } from "@/pages/TaskPage";
 import { ResultPage } from "@/pages/ResultPage";
 import { ContactPage } from "@/pages/ContactPage";
 import { NotificationsPage } from "@/pages/NotificationsPage";
+import { TasksPage } from "@/pages/TasksPage";
+import { FavoritesPage } from "@/pages/FavoritesPage";
 
 function AuthGuard() {
   const [loading, setLoading] = useState(true);
@@ -59,6 +61,8 @@ const router = createBrowserRouter([
       { path: "task/:taskId", element: <TaskPage /> },
       { path: "result", element: <ResultPage /> },
       { path: "notifications", element: <NotificationsPage /> },
+      { path: "tasks", element: <TasksPage /> },
+      { path: "favorites", element: <FavoritesPage /> },
     ],
   },
   { path: "/login", element: <LoginPage /> },
