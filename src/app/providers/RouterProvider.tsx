@@ -10,6 +10,8 @@ import { TheoryPage } from "@/pages/TheoryPage";
 import { AIAssistantPage } from "@/pages/AIAssistantPage";
 import { TaskPage } from "@/pages/TaskPage";
 import { ResultPage } from "@/pages/ResultPage";
+import { ContactPage } from "@/pages/ContactPage";
+import { NotificationsPage } from "@/pages/NotificationsPage";
 
 function AuthGuard() {
   const [loading, setLoading] = useState(true);
@@ -56,10 +58,12 @@ const router = createBrowserRouter([
       { path: "ai", element: <AIAssistantPage /> },
       { path: "task/:taskId", element: <TaskPage /> },
       { path: "result", element: <ResultPage /> },
+      { path: "notifications", element: <NotificationsPage /> },
     ],
   },
   { path: "/login", element: <LoginPage /> },
   { path: "/register", element: <RegisterPage /> },
+  { path: "/contact", element: <ContactPage /> },
 ]);
 
 export function AppRouterProvider() {

@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Sprout } from "lucide-react";
 import { supabase } from "@/shared/api/supabase";
+import { Dialog } from "@/components/ui/dialog";
 
 function IconInstagram() {
   return (
@@ -34,6 +36,7 @@ function IconX() {
 
 export function AppHeader() {
   const navigate = useNavigate();
+  const [signOutOpen, setSignOutOpen] = useState(false);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -41,57 +44,82 @@ export function AppHeader() {
   };
 
   return (
-    <header className="flex items-center justify-between px-8 py-4">
-      <div className="flex items-center gap-8">
-        <Link to="/" className="flex items-center gap-2">
-          <Sprout className="size-5 text-foreground" />
-          <span className="font-heading font-bold text-foreground">SmartSeeds</span>
-        </Link>
+    <>
+      <header className="flex items-center justify-between px-8 py-4">
+        <div className="flex items-center gap-8">
+          <Link to="/" className="flex items-center gap-2">
+            <Sprout className="size-5 text-foreground" />
+            <span className="font-heading font-bold text-foreground">SmartSeeds</span>
+          </Link>
 
-        <nav className="flex items-center gap-6">
-          <Link
-            to="/courses"
-            className="text-sm font-medium text-foreground hover:opacity-70 transition-opacity"
-          >
-            Content
-          </Link>
-          <Link
-            to="/courses"
-            className="text-sm font-medium text-foreground hover:opacity-70 transition-opacity"
-          >
-            Tasks
-          </Link>
-          <Link
-            to="/ai"
-            className="text-sm font-medium text-foreground hover:opacity-70 transition-opacity"
-          >
-            AI Assistant
-          </Link>
-          <button className="text-sm font-medium text-foreground hover:opacity-70 transition-opacity">
-            Notifications
-          </button>
-        </nav>
-      </div>
-
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-3 text-foreground">
-          <a href="#" aria-label="Instagram" className="hover:opacity-70 transition-opacity">
-            <IconInstagram />
-          </a>
-          <a href="#" aria-label="LinkedIn" className="hover:opacity-70 transition-opacity">
-            <IconLinkedin />
-          </a>
-          <a href="#" aria-label="X" className="hover:opacity-70 transition-opacity">
-            <IconX />
-          </a>
+          <nav className="flex items-center gap-6">
+            <Link
+              to="/courses"
+              className="text-sm font-medium text-foreground hover:opacity-70 transition-opacity"
+            >
+              Content
+            </Link>
+            <Link
+              to="/courses"
+              className="text-sm font-medium text-foreground hover:opacity-70 transition-opacity"
+            >
+              Tasks
+            </Link>
+            <Link
+              to="/ai"
+              className="text-sm font-medium text-foreground hover:opacity-70 transition-opacity"
+            >
+              AI Assistant
+            </Link>
+            <Link
+              to="/notifications"
+              className="text-sm font-medium text-foreground hover:opacity-70 transition-opacity"
+            >
+              Notifications
+            </Link>
+          </nav>
         </div>
-        <button
-          onClick={handleLogout}
-          className="text-sm font-medium text-foreground hover:opacity-70 transition-opacity ml-2"
-        >
-          Sign Out
-        </button>
-      </div>
-    </header>
+
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 text-foreground">
+            <a href="#" aria-label="Instagram" className="hover:opacity-70 transition-opacity">
+              <IconInstagram />
+            </a>
+            <a href="#" aria-label="LinkedIn" className="hover:opacity-70 transition-opacity">
+              <IconLinkedin />
+            </a>
+            <a href="#" aria-label="X" className="hover:opacity-70 transition-opacity">
+              <IconX />
+            </a>
+          </div>
+          <button
+            onClick={() => setSignOutOpen(true)}
+            className="text-sm font-medium text-foreground hover:opacity-70 transition-opacity ml-2"
+          >
+            Sign Out
+          </button>
+        </div>
+      </header>
+
+      <Dialog open={signOutOpen} onClose={() => setSignOutOpen(false)} title="Sign Out">
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          Are you sure you want to sign out?
+        </p>
+        <div className="mt-5 flex gap-3">
+          <button
+            onClick={() => setSignOutOpen(false)}
+            className="flex-1 rounded-xl border border-border py-2.5 text-sm font-medium text-foreground hover:opacity-70 transition-opacity"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleLogout}
+            className="flex-1 rounded-xl bg-[#9590B8] py-2.5 text-sm font-medium text-white hover:opacity-85 transition-opacity"
+          >
+            Sign Out
+          </button>
+        </div>
+      </Dialog>
+    </>
   );
 }

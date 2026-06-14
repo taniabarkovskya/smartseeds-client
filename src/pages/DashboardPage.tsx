@@ -53,11 +53,17 @@ export function DashboardPage() {
   });
 
   const displayCourses: Course[] =
-    courses && courses.length > 0 ? courses.slice(0, 3) : MOCK_COURSES.slice(0, 3);
+    courses && courses.length > 0
+      ? courses.slice(0, 3)
+      : MOCK_COURSES.slice(0, 3);
 
   const tasksCompleted = activities?.length ?? 0;
   const modulesCompleted = new Set(activities?.map((a) => a.task_id)).size;
-  const vector = vectorRecord?.pu_vector ?? { phonetics: 0, lexical: 0, grammar: 0 };
+  const vector = vectorRecord?.pu_vector ?? {
+    phonetics: 0,
+    lexical: 0,
+    grammar: 0,
+  };
 
   return (
     <div className="min-h-screen bg-[#9590B8]">
@@ -74,10 +80,14 @@ export function DashboardPage() {
             Check recommended materials below (AI suggestions)
           </p>
           <div className="flex justify-center gap-3">
-            <Button variant="dark" size="lg" onClick={() => navigate("/courses")}>
+            <Button
+              variant="dark"
+              size="lg"
+              onClick={() => navigate("/courses")}
+            >
               Go to learning
             </Button>
-            <Button variant="outline" size="lg">
+            <Button variant="outline" size="lg" onClick={() => navigate("/ai")}>
               Ask AI
             </Button>
           </div>
@@ -132,7 +142,9 @@ export function DashboardPage() {
               </Card>
               <Card>
                 <CardContent className="p-5">
-                  <p className="font-medium text-foreground">🔥 Current streak</p>
+                  <p className="font-medium text-foreground">
+                    🔥 Current streak
+                  </p>
                   <p className="text-sm text-muted-foreground mt-1">
                     Keep learning every day!
                   </p>
@@ -148,9 +160,21 @@ export function DashboardPage() {
                 </h3>
                 {(
                   [
-                    { label: "Phonetics", value: vector.phonetics, color: "#4F86C6" },
-                    { label: "Lexical", value: vector.lexical, color: "#67C99E" },
-                    { label: "Grammar", value: vector.grammar, color: "#F7A84A" },
+                    {
+                      label: "Phonetics",
+                      value: vector.phonetics,
+                      color: "#4F86C6",
+                    },
+                    {
+                      label: "Lexical",
+                      value: vector.lexical,
+                      color: "#67C99E",
+                    },
+                    {
+                      label: "Grammar",
+                      value: vector.grammar,
+                      color: "#F7A84A",
+                    },
                   ] as const
                 ).map(({ label, value, color }) => (
                   <div key={label} className="mb-4">
