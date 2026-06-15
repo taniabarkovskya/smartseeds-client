@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import { Heart, ArrowLeft } from "lucide-react";
 import { AppHeader } from "@/widgets/AppHeader/AppHeader";
 import { useFavoritesStore } from "@/shared/lib/store";
-import { MOCK_COURSES } from "@/shared/api/mockData";
 
 interface CourseDisplay {
   id: string;

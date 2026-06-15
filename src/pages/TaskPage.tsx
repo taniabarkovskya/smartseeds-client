@@ -654,7 +654,7 @@ export function TaskPage() {
     const emoji = pct >= 80 ? "🎉" : pct >= 50 ? "👍" : "💪";
 
     const getExText = (ex: typeof exercises[0]) => {
-      const e = ex as Record<string, string>;
+      const e = ex as unknown as Record<string, string>;
       return e.question ?? e.statement ?? e.prompt ?? e.word ?? e.sentence ?? e.text ?? ex.kind;
     };
 
