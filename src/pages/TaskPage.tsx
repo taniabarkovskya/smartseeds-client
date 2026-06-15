@@ -3,8 +3,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Mic, MicOff, CheckCircle, XCircle, ArrowRight, ChevronLeft } from "lucide-react";
 import { AppHeader } from "@/widgets/AppHeader/AppHeader";
 import { useSpeechRecognition } from "@/features/speech-recorder/model/useSpeechRecognition";
-import { MOCK_EXERCISES, MOCK_COURSE_DETAILS } from "@/shared/api/mockLessons";
+import { MOCK_EXERCISES_BY_COURSE, MOCK_COURSE_DETAILS } from "@/shared/api/mockLessons";
 import { MOCK_VECTOR, MOCK_COURSES } from "@/shared/api/mockData";
+import { useCompletedStore } from "@/shared/lib/store";
+import { MessageContent } from "@/shared/ui/MessageContent";
 import { chatWithAI } from "@/shared/api/ai";
 import { updateVector } from "@/shared/lib/adaptiveAlgorithm";
 import type { CompetencyVectorValues } from "@/shared/lib/adaptiveAlgorithm";
@@ -592,7 +594,8 @@ export function TaskPage() {
   const navigate = useNavigate();
 
   const course = MOCK_COURSE_DETAILS[courseId ?? "1"] ?? MOCK_COURSE_DETAILS["1"];
-  const exercises = MOCK_EXERCISES;
+  const exercises = MOCK_EXERCISES_BY_COURSE[courseId ?? "1"] ?? [];
+  const { markComplete } = useCompletedStore();
 
   const [idx, setIdx] = useState(0);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
@@ -626,9 +629,20 @@ export function TaskPage() {
     setResults(newResults);
     setFeedback(null);
     if (idx + 1 >= exercises.length) {
+      markComplete(courseId ?? "1");
       setDone(true);
     } else {
       setIdx((i) => i + 1);
+    }
+  };
+
+  const handleBack = () => {
+    if (idx === 0) {
+      navigate(`/courses/${courseId}`);
+    } else {
+      setIdx((i) => i - 1);
+      setFeedback(null);
+      setResults((prev) => prev.slice(0, idx - 1));
     }
   };
 
@@ -723,8 +737,8 @@ Keep the tone friendly, warm, and motivating. The student is a child.`;
             </button>
 
             {aiAnalysis && (
-              <div className="mt-4 rounded-2xl bg-white/10 border border-white/20 p-5 text-left text-sm text-white/90 whitespace-pre-wrap leading-relaxed">
-                {aiAnalysis}
+              <div className="mt-4 rounded-2xl bg-white/10 border border-white/20 p-5 text-left text-sm text-white/90 leading-relaxed">
+                <MessageContent content={aiAnalysis} />
               </div>
             )}
           </div>
@@ -740,7 +754,7 @@ Keep the tone friendly, warm, and motivating. The student is a child.`;
       <div className="max-w-2xl mx-auto px-6 py-8">
         {/* Progress */}
         <div className="flex items-center gap-3 mb-8">
-          <button onClick={() => navigate(`/courses/${courseId}`)} className="text-white/55 hover:text-white transition-colors">
+          <button onClick={handleBack} className="text-white/55 hover:text-white transition-colors" title={idx === 0 ? "Back to course" : "Previous exercise"}>
             <ChevronLeft className="size-5" />
           </button>
           <div className="flex-1 h-2 rounded-full bg-white/20 overflow-hidden">

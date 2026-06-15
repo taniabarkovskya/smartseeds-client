@@ -26,6 +26,26 @@ export const useAppStore = create<AppStore>((set) => ({
   setLastScore: (lastScore) => set({ lastScore }),
 }));
 
+interface CompletedStore {
+  completedIds: string[];
+  markComplete: (id: string) => void;
+}
+
+export const useCompletedStore = create<CompletedStore>()(
+  persist(
+    (set) => ({
+      completedIds: [],
+      markComplete: (id) =>
+        set((state) => ({
+          completedIds: state.completedIds.includes(id)
+            ? state.completedIds
+            : [...state.completedIds, id],
+        })),
+    }),
+    { name: "smartseeds-completed" },
+  ),
+);
+
 interface FavoritesStore {
   favoriteIds: string[];
   toggleFavorite: (id: string) => void;

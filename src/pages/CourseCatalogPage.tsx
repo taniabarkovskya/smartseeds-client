@@ -5,7 +5,7 @@ import { Search, X, Heart, SlidersHorizontal } from "lucide-react";
 import { AppHeader } from "@/widgets/AppHeader/AppHeader";
 import { getCourses } from "@/entities/course/api/courseApi";
 import { MOCK_COURSES } from "@/shared/api/mockData";
-import { useFavoritesStore } from "@/shared/lib/store";
+import { useFavoritesStore, useCompletedStore } from "@/shared/lib/store";
 import type { Course } from "@/entities/course/model/types";
 
 interface CourseDisplay extends Course {
@@ -36,6 +36,7 @@ type SortKey = "New" | "Popular" | "Relevant" | "Rating";
 export function CourseCatalogPage() {
   const navigate = useNavigate();
   const { favoriteIds, toggleFavorite } = useFavoritesStore();
+  const { completedIds } = useCompletedStore();
 
   const { data: dbCourses } = useQuery<Course[]>({
     queryKey: ["courses"],
@@ -99,8 +100,14 @@ export function CourseCatalogPage() {
     const arr = [...filtered];
     if (sort === "Rating") arr.sort((a, b) => b.hours - a.hours);
     else if (sort === "Popular") arr.sort((a, b) => a.difficulty.localeCompare(b.difficulty));
+    // completed courses always sink to the bottom
+    arr.sort((a, b) => {
+      const aD = completedIds.includes(a.id) ? 1 : 0;
+      const bD = completedIds.includes(b.id) ? 1 : 0;
+      return aD - bD;
+    });
     return arr;
-  }, [filtered, sort]);
+  }, [filtered, sort, completedIds]);
 
   const SidebarContent = () => (
     <>
@@ -299,6 +306,7 @@ export function CourseCatalogPage() {
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-5">
               {sorted.map((course, i) => {
                 const isFav = favoriteIds.includes(course.id);
+                const isDone = completedIds.includes(course.id);
                 return (
                   <div
                     key={course.id}
@@ -309,13 +317,20 @@ export function CourseCatalogPage() {
                       className="w-full text-left"
                     >
                       <div
-                        className="h-32 flex items-center justify-center text-5xl md:h-36"
+                        className="relative h-32 flex items-center justify-center text-5xl md:h-36"
                         style={{ backgroundColor: CARD_COLORS[i % CARD_COLORS.length] }}
                       >
-                        {course.image}
+                        <span className={isDone ? "opacity-40" : ""}>{course.image}</span>
+                        {isDone && (
+                          <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                            <span className="flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-green-700">
+                              ✓ Completed
+                            </span>
+                          </div>
+                        )}
                       </div>
                       <div className="p-3 md:p-4">
-                        <p className="font-heading font-semibold text-foreground text-sm leading-tight mb-1 line-clamp-2">
+                        <p className={`font-heading font-semibold text-sm leading-tight mb-1 line-clamp-2 ${isDone ? "text-foreground/50" : "text-foreground"}`}>
                           {course.title}
                         </p>
                         <p className="text-xs text-muted-foreground">{course.hours}h · {course.level} · {course.difficulty}</p>

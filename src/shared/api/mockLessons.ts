@@ -337,6 +337,302 @@ export type Exercise =
   | SpeechSentenceExercise
   | DictationExercise;
 
+export const MOCK_EXERCISES_BY_COURSE: Record<string, Exercise[]> = {
+  // ── Course 1: Sound Pronunciation ─────────────────────────────────────────
+  "1": [
+    {
+      kind: "multiple-choice",
+      id: "1-1",
+      question: 'Which word contains the long vowel sound /eɪ/ (as in "cake")?',
+      options: ["cat", "cap", "cake", "cab"],
+      correct: 2,
+      explanation: '"Cake" has the long vowel /eɪ/ — the letter "a" says its own name. The others all have the short /æ/ sound.',
+    },
+    {
+      kind: "true-false",
+      id: "1-2",
+      statement: '"B" and "P" are a voiced/voiceless consonant pair — they are made in the same place in the mouth.',
+      correct: true,
+      explanation: 'Correct! Both are bilabial stops. "B" vibrates your vocal cords; "P" does not.',
+    },
+    {
+      kind: "fill-blank",
+      id: "1-3",
+      title: "Fill in the missing word",
+      instruction: "Choose the correct word to complete each sentence.",
+      sentences: [
+        { id: "1-s1", before: "The", after: "sat on the mat.", answer: "cat" },
+        { id: "1-s2", before: "She has a", after: "red hat.", answer: "big" },
+        { id: "1-s3", before: "He can", after: "very fast.", answer: "run" },
+      ],
+    },
+    {
+      kind: "speech-word",
+      id: "1-4",
+      word: "butterfly",
+      phonetic: "/ˈbʌtəflaɪ/",
+      translation: "a flying insect with colourful wings",
+      example: "A butterfly landed on the flower.",
+    },
+    {
+      kind: "speech-sentence",
+      id: "1-5",
+      sentence: "Blue birds fly high in the bright blue sky.",
+      hint: 'Focus on the "bl" blend at the start of "blue" and "bright".',
+    },
+    {
+      kind: "dictation",
+      id: "1-6",
+      text: "The big cat sat on a flat mat.",
+    },
+  ],
+
+  // ── Course 2: Differentiating Opposing Phonemes ────────────────────────────
+  "2": [
+    {
+      kind: "multiple-choice",
+      id: "2-1",
+      question: 'Which word has the /ʃ/ sound (as in "she")?',
+      options: ["sip", "sit", "ship", "six"],
+      correct: 2,
+      explanation: '"Ship" starts with /ʃ/. The others start with /s/. Notice how your mouth shape changes.',
+    },
+    {
+      kind: "true-false",
+      id: "2-2",
+      statement: 'The words "rice" and "lice" are pronounced exactly the same.',
+      correct: false,
+      explanation: '"Rice" starts with /r/ and "lice" starts with /l/. These are a minimal pair — one sound makes a completely different word!',
+    },
+    {
+      kind: "fill-blank",
+      id: "2-3",
+      title: "S or SH?",
+      instruction: "Complete each sentence with the correct word.",
+      sentences: [
+        { id: "2-s1", before: "The", after: "sailed across the ocean.", answer: "ship" },
+        { id: "2-s2", before: "Can you", after: "what I am thinking?", answer: "see" },
+        { id: "2-s3", before: "He put on his", after: "and coat.", answer: "shirt" },
+      ],
+    },
+    {
+      kind: "speech-word",
+      id: "2-4",
+      word: "ship",
+      phonetic: "/ʃɪp/",
+      translation: "a large vessel that travels on water",
+      example: "The ship sailed slowly into the harbour.",
+    },
+    {
+      kind: "speech-sentence",
+      id: "2-5",
+      sentence: "She sells seashells by the seashore.",
+      hint: 'Alternate between /s/ and /ʃ/ sounds. Say it slowly first, then speed up!',
+    },
+    {
+      kind: "dictation",
+      id: "2-6",
+      text: "The sheep on the ship saw the shining shore.",
+    },
+  ],
+
+  // ── Course 3: Developing Connected Speech ─────────────────────────────────
+  "3": [
+    {
+      kind: "multiple-choice",
+      id: "3-1",
+      question: 'Which linking word best completes: "I was tired, ___ I went to bed early."',
+      options: ["but", "because", "and", "so"],
+      correct: 3,
+      explanation: '"So" shows a result or consequence. The tiredness caused the early bedtime.',
+    },
+    {
+      kind: "true-false",
+      id: "3-2",
+      statement: '"First", "then", and "finally" are sequence words that help organise a story in time order.',
+      correct: true,
+      explanation: 'Correct! These are called sequence connectors. They help the listener follow the order of events.',
+    },
+    {
+      kind: "fill-blank",
+      id: "3-3",
+      title: "Fill in the linking word",
+      instruction: "Complete each sentence with the best connecting word.",
+      sentences: [
+        { id: "3-s1", before: "I like apples", after: "oranges.", answer: "and" },
+        { id: "3-s2", before: "She was hungry,", after: "she ate lunch.", answer: "so" },
+        { id: "3-s3", before: "He is tall,", after: "his brother is short.", answer: "but" },
+      ],
+    },
+    {
+      kind: "speech-word",
+      id: "3-4",
+      word: "because",
+      phonetic: "/bɪˈkɒz/",
+      translation: "for the reason that",
+      example: "I stayed home because it was raining.",
+    },
+    {
+      kind: "speech-sentence",
+      id: "3-5",
+      sentence: "First I wake up, then I brush my teeth, and finally I eat breakfast.",
+      hint: "Use a small pause after each sequence word — first / then / finally.",
+    },
+    {
+      kind: "dictation",
+      id: "3-6",
+      text: "She was tired but she finished her homework.",
+    },
+  ],
+
+  // ── Course 4: Expanding Vocabulary ────────────────────────────────────────
+  "4": [
+    {
+      kind: "multiple-choice",
+      id: "4-1",
+      question: "Which word means a place where you prepare and cook food?",
+      options: ["bedroom", "bathroom", "kitchen", "garden"],
+      correct: 2,
+      explanation: 'A "kitchen" is the room where meals are prepared. "Bedroom" is for sleeping, "bathroom" for washing.',
+    },
+    {
+      kind: "true-false",
+      id: "4-2",
+      statement: '"Enormous" and "tiny" are antonyms — they have opposite meanings.',
+      correct: true,
+      explanation: 'Correct! "Enormous" means very large and "tiny" means very small — opposite ends of the size scale.',
+    },
+    {
+      kind: "fill-blank",
+      id: "4-3",
+      title: "Fill in the correct word",
+      instruction: "Choose the best word to complete each sentence.",
+      sentences: [
+        { id: "4-s1", before: "She drinks water from a", after: ".", answer: "glass" },
+        { id: "4-s2", before: "We cook food in the", after: ".", answer: "kitchen" },
+        { id: "4-s3", before: "He reads a", after: "every night.", answer: "book" },
+      ],
+    },
+    {
+      kind: "speech-word",
+      id: "4-4",
+      word: "vocabulary",
+      phonetic: "/vəˈkæbjʊleri/",
+      translation: "all the words a person knows or uses",
+      example: "Reading every day helps build your vocabulary.",
+    },
+    {
+      kind: "speech-sentence",
+      id: "4-5",
+      sentence: "Every day I learn five new words to grow my vocabulary.",
+      hint: "Stress the content words: LEARN, FIVE, NEW, WORDS, GROW, VOCABULARY.",
+    },
+    {
+      kind: "dictation",
+      id: "4-6",
+      text: "The big brown dog runs fast in the park.",
+    },
+  ],
+
+  // ── Course 5: Automating Sounds in Sentences ──────────────────────────────
+  "5": [
+    {
+      kind: "multiple-choice",
+      id: "5-1",
+      question: 'In the sentence "She carefully placed the red roses on the table", which word is the main verb?',
+      options: ["carefully", "red", "placed", "roses"],
+      correct: 2,
+      explanation: '"Placed" is the main verb — it describes the action. "Carefully" is an adverb, "red" an adjective.',
+    },
+    {
+      kind: "true-false",
+      id: "5-2",
+      statement: "Repeating sentences aloud many times helps automate correct pronunciation.",
+      correct: true,
+      explanation: "Correct! Repetition builds muscle memory in the tongue and lips, making correct sounds automatic.",
+    },
+    {
+      kind: "fill-blank",
+      id: "5-3",
+      title: "Complete the phrase",
+      instruction: "Fill in the missing preposition to complete the phrase.",
+      sentences: [
+        { id: "5-s1", before: "I go to school", after: "bus.", answer: "by" },
+        { id: "5-s2", before: "She is good", after: "singing.", answer: "at" },
+        { id: "5-s3", before: "We arrived", after: "time.", answer: "on" },
+      ],
+    },
+    {
+      kind: "speech-word",
+      id: "5-4",
+      word: "rhythm",
+      phonetic: "/ˈrɪðəm/",
+      translation: "a regular pattern of sound or movement",
+      example: "English has a natural rhythm — some syllables are stressed, others are weak.",
+    },
+    {
+      kind: "speech-sentence",
+      id: "5-5",
+      sentence: "Peter Piper picked a peck of pickled peppers.",
+      hint: 'Focus on the /p/ sound at the start of each word — keep it crisp and clear!',
+    },
+    {
+      kind: "dictation",
+      id: "5-6",
+      text: "Practice makes perfect when you repeat sentences every day.",
+    },
+  ],
+
+  // ── Course 6: Grammar Structure of Language ───────────────────────────────
+  "6": [
+    {
+      kind: "multiple-choice",
+      id: "6-1",
+      question: 'Which article is correct? "___ honest person always tells the truth."',
+      options: ["A", "An", "The", "(no article)"],
+      correct: 1,
+      explanation: '"Honest" begins with a vowel sound /ɒ/, so we use "an". The letter "h" is silent here.',
+    },
+    {
+      kind: "true-false",
+      id: "6-2",
+      statement: 'The sentence "She don\'t like coffee." is grammatically correct.',
+      correct: false,
+      explanation: 'Incorrect. With he/she/it in Present Simple, use "doesn\'t": "She doesn\'t like coffee."',
+    },
+    {
+      kind: "fill-blank",
+      id: "6-3",
+      title: "Fill in the correct verb form",
+      instruction: "Complete each sentence with am, is, or are.",
+      sentences: [
+        { id: "6-s1", before: "I", after: "a student.", answer: "am" },
+        { id: "6-s2", before: "She", after: "very happy today.", answer: "is" },
+        { id: "6-s3", before: "They", after: "playing football now.", answer: "are" },
+      ],
+    },
+    {
+      kind: "speech-word",
+      id: "6-4",
+      word: "pronunciation",
+      phonetic: "/prəˌnʌnsiˈeɪʃən/",
+      translation: "the way in which a word is spoken",
+      example: "Good pronunciation makes you easier to understand.",
+    },
+    {
+      kind: "speech-sentence",
+      id: "6-5",
+      sentence: "She doesn't like coffee but she loves green tea.",
+      hint: 'Pay attention to the contraction "doesn\'t" — say it as one smooth word.',
+    },
+    {
+      kind: "dictation",
+      id: "6-6",
+      text: "He doesn't like coffee but she loves it very much.",
+    },
+  ],
+};
+
 export const MOCK_EXERCISES: Exercise[] = [
   {
     kind: "multiple-choice",

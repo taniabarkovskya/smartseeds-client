@@ -1,14 +1,17 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Clock, BookOpen, Mic } from "lucide-react";
+import { ArrowLeft, Clock, BookOpen, Mic, CheckCircle2 } from "lucide-react";
 import { AppHeader } from "@/widgets/AppHeader/AppHeader";
 import { Button } from "@/components/ui/button";
 import { MOCK_COURSE_DETAILS } from "@/shared/api/mockLessons";
+import { useCompletedStore } from "@/shared/lib/store";
 
 export function CoursePage() {
   const { courseId } = useParams<{ courseId: string }>();
   const navigate = useNavigate();
 
   const course = MOCK_COURSE_DETAILS[courseId ?? "1"] ?? MOCK_COURSE_DETAILS["1"];
+  const { completedIds } = useCompletedStore();
+  const isCompleted = completedIds.includes(courseId ?? "");
 
   return (
     <div className="min-h-screen bg-white">
@@ -45,9 +48,16 @@ export function CoursePage() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-10">
           {/* Main — 2/3 */}
           <div className="lg:col-span-2">
-            <h1 className="font-heading text-3xl font-bold text-foreground mb-4 md:text-4xl md:mb-6">
+            <h1 className="font-heading text-3xl font-bold text-foreground mb-3 md:text-4xl">
               {course.title}
             </h1>
+
+            {isCompleted && (
+              <div className="flex items-center gap-2 mb-4">
+                <CheckCircle2 className="size-4 text-green-600" />
+                <span className="text-sm font-semibold text-green-600">Completed</span>
+              </div>
+            )}
 
             {/* Meta chips */}
             <div className="flex flex-wrap gap-2 mb-4 md:gap-3 md:mb-6">
@@ -98,7 +108,7 @@ export function CoursePage() {
                 size="lg"
                 onClick={() => navigate(`/courses/${courseId}/tasks`)}
               >
-                Start tasks
+                {isCompleted ? "Retake tasks" : "Start tasks"}
               </Button>
               <Button
                 variant="ghost"
@@ -135,15 +145,19 @@ export function CoursePage() {
                 background: `linear-gradient(135deg, ${course.heroFrom} 0%, ${course.heroTo} 100%)`,
               }}
             >
-              <p className="font-heading font-bold text-base mb-1">Ready to practice?</p>
+              <p className="font-heading font-bold text-base mb-1">
+                {isCompleted ? "Great work! 🎉" : "Ready to practice?"}
+              </p>
               <p className="text-xs text-white/80 mb-4">
-                Start the first lesson now and track your progress.
+                {isCompleted
+                  ? "You've completed this course. Retake it to improve your score."
+                  : "Start the first lesson now and track your progress."}
               </p>
               <button
                 onClick={() => navigate(`/courses/${courseId}/tasks`)}
                 className="w-full bg-white/20 hover:bg-white/30 transition-colors rounded-xl py-2 text-sm font-semibold text-white"
               >
-                Begin →
+                {isCompleted ? "Retake →" : "Begin →"}
               </button>
             </div>
           </div>
