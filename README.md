@@ -2,7 +2,7 @@
 
 > Інформаційна система для розвитку мовлення дітей з адаптивним підбором завдань на основі ASR та NLP.
 
-**🔗 Live demo:** `[буде додано після деплою]`
+**🔗 Live demo:** [smartseeds.netlify.app](https://smartseeds.netlify.app/)
 
 ---
 
@@ -20,7 +20,7 @@ SmartSeeds — освітня веб-платформа, яка допомага
 
 | Шар           | Технологія               |
 | ------------- | ------------------------ |
-| Фреймворк     | React 18 + TypeScript    |
+| Фреймворк     | React 19 + TypeScript    |
 | Збірка        | Vite                     |
 | Стилі         | Tailwind CSS + shadcn/ui |
 | База даних    | Supabase (PostgreSQL)    |
@@ -60,13 +60,46 @@ ollama serve
 
 ## Структура проєкту
 
+Архітектура побудована за методологією **Feature-Sliced Design (FSD)**.
+
 ```
 src/
-├── app/          # провайдери, роутер
-├── pages/        # сторінки застосунку
-├── features/     # фічі (запис мовлення, AI-оцінювання, прогрес)
-├── entities/     # сутності БД (user, course, activity)
-└── shared/       # ui, api, утиліти, адаптивний алгоритм
+├── app/                        # провайдери та роутер
+│   └── providers/              # QueryProvider, RouterProvider
+│
+├── pages/                      # сторінки застосунку
+│   ├── DashboardPage.tsx       # головна панель
+│   ├── CourseCatalogPage.tsx   # каталог курсів
+│   ├── CoursePage.tsx          # деталі курсу
+│   ├── TaskPage.tsx            # виконання вправ
+│   ├── TheoryPage.tsx          # теоретичний матеріал
+│   ├── TasksPage.tsx           # мої завдання
+│   ├── AIAssistantPage.tsx     # чат з AI-асистентом Flippy
+│   ├── NotificationsPage.tsx   # сповіщення
+│   ├── FavoritesPage.tsx       # збережені курси
+│   ├── LoginPage.tsx
+│   └── RegisterPage.tsx
+│
+├── widgets/                    # великі самостійні блоки UI
+│   └── AppHeader/              # навігаційна шапка
+│
+├── features/                   # ізольована функціональність
+│   ├── auth/                   # форми входу, реєстрації, відновлення паролю
+│   └── speech-recorder/        # хук Web Speech API (ASR)
+│
+├── entities/                   # доменні сутності
+│   ├── user/                   # модель та API користувача
+│   ├── course/                 # модель та API курсу
+│   └── activity/               # модель та API активності
+│
+├── shared/                     # спільна інфраструктура
+│   ├── api/                    # supabase, ollama AI, mock-дані, вправи
+│   ├── config/                 # env змінні
+│   ├── lib/                    # адаптивний алгоритм Pu, Zustand store, utils
+│   └── ui/                     # перевикористовувані UI-компоненти
+│
+└── components/
+    └── ui/                     # shadcn/ui компоненти (button, card, dialog…)
 ```
 
 ---
