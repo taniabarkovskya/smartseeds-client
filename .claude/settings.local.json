@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(Get-ChildItem \"c:\\\\Users\\\\tania\\\\Desktop\\\\університет_готові роботи\\\\8 семестр\\\\!диплом\\\\project\\\\smartseeds-client\\\\src\" -Recurse)",
-      "Bash(Select-Object FullName)"
+      "Bash(Select-Object FullName)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
     ]
   }
 }
